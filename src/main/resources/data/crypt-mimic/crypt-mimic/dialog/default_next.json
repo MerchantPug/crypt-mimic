@@ -1,0 +1,13 @@
+{
+  "text": [
+    {
+      "type": "translatable",
+      "translate": "npc.crypt-mimic.default.dialog.next"
+    }
+  ],
+  "actions": [
+    {
+      "action": "crypt-mimic:close"
+    }
+  ]
+}

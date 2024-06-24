@@ -1,0 +1,13 @@
+{
+  "action.crypt-mimic.close": "Done",
+  "action.crypt-mimic.show_dialog": "Next",
+  "npc.crypt-mimic.default.dialog.next": "Mimic adds these NPCs and their dialog, all via datapacks. Theres also an API for custom dialog actions like the button below. Hope you enjoy <3",
+  "npc.crypt-mimic.default.dialog.start": "Heya, welcome to the Mimic demo!",
+  "npc.crypt-mimic.default.name": "Py",
+  "npc.crypt-mimic.default.title": "⮜goofy lil dork⮞",
+  "ui.crypt-mimic.theme": "UI Theme: %s",
+  "ui.crypt-mimic.theme.frappe": "Frappé",
+  "ui.crypt-mimic.theme.latte": "Latte",
+  "ui.crypt-mimic.theme.macchiato": "Macchiato",
+  "ui.crypt-mimic.theme.mocha": "Mocha"
+}

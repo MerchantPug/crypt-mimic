@@ -1,0 +1,22 @@
+{
+  "name": [
+    {
+      "type": "translatable",
+      "translate": "npc.crypt-mimic.default.name"
+    }
+  ],
+  "title": [
+    {
+      "type": "translatable",
+      "translate": "npc.crypt-mimic.default.title"
+    }
+  ],
+  "skin": {
+    "texture": "crypt-mimic:textures/entity/npc/py.png",
+    "hasSlimArms": true
+  },
+  "action": {
+    "action": "crypt-mimic:show_dialog",
+    "value": "crypt-mimic:default_start"
+  }
+}

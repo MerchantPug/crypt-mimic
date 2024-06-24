@@ -1,0 +1,33 @@
+{
+  "schemaVersion": 1,
+  "id": "crypt-mimic",
+  "name": "Crypt: Mimic",
+  "version": "$version",
+  "description": "Data driven NPCs",
+  "authors": [
+    "Pyrrha"
+  ],
+  "contact": {
+    "homepage": "https://modrinth.com/project/crypt-mimic",
+    "sources": "https://github.com/JustPyrrha/crypt-mimic",
+    "issues": "https://github.com/JustPyrrha/crypt-mimic/issues"
+  },
+  "environment": "*",
+  "entrypoints": {
+    "main": [{
+      "adapter": "kotlin",
+      "value": "gay.pyrrha.mimic.Mimic"
+    }],
+    "client": [{
+      "adapter": "kotlin",
+      "value": "gay.pyrrha.mimic.client.MimicClient"
+    }],
+    "fabric-datagen": [{
+      "adapter": "kotlin",
+      "value": "gay.pyrrha.mimic.datagen.MimicDataGenerator"
+    }]
+  },
+  "mixins": [
+    "crypt-mimic.mixins.json"
+  ]
+}
