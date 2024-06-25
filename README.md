@@ -1,5 +1,6 @@
 # Crypt: Mimic
-Made for ModFest: Carnival\
+[![Made for ModFest: Carnival](https://raw.githubusercontent.com/ModFest/art/v2/badge/svg/carnival/cozy.svg)](https://modfest.net/carnival)
+
 Not what I set out to make, but still something cool :3
 
 ### Usage guide
