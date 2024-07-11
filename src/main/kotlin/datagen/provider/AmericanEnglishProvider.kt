@@ -31,5 +31,10 @@ public class AmericanEnglishProvider(
         // Dialog actions
         builder.add("action.crypt-mimic.show_dialog", "Next")
         builder.add("action.crypt-mimic.close", "Done")
+
+        // Commands
+        builder.add("commands.crypt-mimic.npc.invalidPosition", "Invalid position for NPC summon.")
+        builder.add("commands.crypt-mimic.npc.failed.uuid", "Unable to summon NPC due to duplicate UUIDs.")
+        builder.add("commands.crypt-mimic.npc.success", "Summoned new NPC %s")
     }
 }
