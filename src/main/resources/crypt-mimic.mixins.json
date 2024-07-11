@@ -2,7 +2,7 @@
   "required": true,
   "package": "gay.pyrrha.mimic.mixin",
   "compatibilityLevel": "JAVA_21",
-  "main": [],
+  "mixins": [],
   "client": [
     "client.EntityRendererDispatcherMixin",
     "client.PlayerEntityModelMixin"
