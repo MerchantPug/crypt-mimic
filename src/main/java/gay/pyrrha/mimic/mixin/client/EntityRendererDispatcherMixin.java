@@ -1,8 +1,8 @@
 package gay.pyrrha.mimic.mixin.client;
 
 import com.llamalad7.mixinextras.sugar.Local;
+import gay.pyrrha.mimic.client.entity.ClientNPCEntity;
 import gay.pyrrha.mimic.client.entity.renderer.NPCEntityRenderer;
-import gay.pyrrha.mimic.entity.NPCEntity;
 import gay.pyrrha.mimic.registry.MimicRegistries;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.EntityRenderDispatcher;
@@ -23,7 +23,6 @@ import java.util.Map;
 
 @Mixin(EntityRenderDispatcher.class)
 public class EntityRendererDispatcherMixin {
-    @Shadow private World world;
     @Unique
     private Map<Boolean, EntityRenderer<AbstractClientPlayerEntity>> cryptMimic$npcRenderers = Map.of();
 
@@ -37,12 +36,9 @@ public class EntityRendererDispatcherMixin {
 
     @Inject(method = "getRenderer", at = @At("HEAD"), cancellable = true)
     private <T extends Entity> void cryptMimic$getRenderer(T entity, CallbackInfoReturnable<EntityRenderer<? super T>> cir) {
-        if (entity instanceof AbstractClientPlayerEntity cpe && NPCEntityRenderer.isNpc(cpe) && !cryptMimic$npcRenderers.isEmpty()) {
-            var npc = NPCEntityRenderer.getNpc(cpe);
-            if (npc != null) {
-                //noinspection unchecked
-                cir.setReturnValue((EntityRenderer<? super T>) cryptMimic$npcRenderers.get(npc.skin().hasSlimArms()));
-            }
+        if (entity instanceof ClientNPCEntity npc && !cryptMimic$npcRenderers.isEmpty()) {
+            //noinspection unchecked
+            cir.setReturnValue((EntityRenderer<? super T>) cryptMimic$npcRenderers.get(npc.getRegistryManager().get(MimicRegistries.getNPC()).get(npc.getNpcId()).skin().hasSlimArms()));
         }
     }
 }

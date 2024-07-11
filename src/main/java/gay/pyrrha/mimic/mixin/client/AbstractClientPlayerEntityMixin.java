@@ -1,8 +1,8 @@
 package gay.pyrrha.mimic.mixin.client;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import gay.pyrrha.mimic.client.entity.renderer.NPCEntityRenderer;
-import gay.pyrrha.mimic.npc.Npc;
+import gay.pyrrha.mimic.client.entity.ClientNPCEntity;
+import gay.pyrrha.mimic.registry.MimicRegistries;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.util.SkinTextures;
 import org.spongepowered.asm.mixin.Mixin;
@@ -16,10 +16,10 @@ public class AbstractClientPlayerEntityMixin {
 
     @ModifyReturnValue(method = "getSkinTextures", at = @At("RETURN"))
     private SkinTextures mimic$getSkinTextures(SkinTextures original) {
-        if (NPCEntityRenderer.isNpc((AbstractClientPlayerEntity)(Object) this)) {
+        if ((AbstractClientPlayerEntity)(Object) this instanceof ClientNPCEntity npc) {
             if (mimic$skinTextures == null) {
-                Npc npc = NPCEntityRenderer.getNpc((AbstractClientPlayerEntity)(Object) this);
-                mimic$skinTextures = new SkinTextures(npc.skin().texture(), null, null, null, npc.skin().hasSlimArms() ? SkinTextures.Model.SLIM : SkinTextures.Model.WIDE, true);
+                var npcSkin = npc.getRegistryManager().get(MimicRegistries.getNPC()).get(npc.getNpcId()).skin();
+                mimic$skinTextures = new SkinTextures(npcSkin.texture(), null, null, null, npcSkin.hasSlimArms() ? SkinTextures.Model.SLIM : SkinTextures.Model.WIDE, true);
             }
             return mimic$skinTextures;
         }

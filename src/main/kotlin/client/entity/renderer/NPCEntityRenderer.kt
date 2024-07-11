@@ -1,9 +1,9 @@
 package gay.pyrrha.mimic.client.entity.renderer
 
-import gay.pyrrha.mimic.entity.NPCEntity.Companion.NPC_ID
-import gay.pyrrha.mimic.entity.NPCEntity.Companion.TRACKED_IS_SMALL
-import gay.pyrrha.mimic.npc.Npc
+import com.unascribed.ears.EarsFeatureRenderer
+import gay.pyrrha.mimic.client.entity.ClientNPCEntity
 import gay.pyrrha.mimic.registry.MimicRegistries
+import net.fabricmc.loader.api.FabricLoader
 import net.minecraft.client.network.AbstractClientPlayerEntity
 import net.minecraft.client.render.VertexConsumerProvider
 import net.minecraft.client.render.entity.EntityRendererFactory
@@ -21,18 +21,15 @@ public class NPCEntityRenderer(ctx: EntityRendererFactory.Context, slimArms: Boo
         slimArms
     ) {
 
+    init {
+        if (FabricLoader.getInstance().isModLoaded("ears"))
+            addFeature(EarsFeatureRenderer(this))
+    }
+
     public companion object NpcGetter {
         @JvmStatic
-        public fun isNpc(entity: AbstractClientPlayerEntity) : Boolean {
-            return entity.gameProfile.name.equals("[Mimic NPC]")
-        }
-        @JvmStatic
-        public fun getId(entity: AbstractClientPlayerEntity) : Identifier {
-            return Identifier.of(entity.dataTracker[NPC_ID])
-        }
-        @JvmStatic
-        public fun getNpc(entity: AbstractClientPlayerEntity) : Npc? {
-            return entity.registryManager.get(MimicRegistries.NPC).get(getId(entity));
+        public fun asNpc(entity: AbstractClientPlayerEntity) : ClientNPCEntity {
+            return entity as ClientNPCEntity
         }
     }
 
@@ -50,7 +47,7 @@ public class NPCEntityRenderer(ctx: EntityRendererFactory.Context, slimArms: Boo
     }
 
     override fun getTexture(entity: AbstractClientPlayerEntity): Identifier =
-        getNpc(entity)?.skin?.texture
+        asNpc(entity).registryManager[MimicRegistries.NPC].get(asNpc(entity).getNpcId())?.skin?.texture
             ?: Identifier.ofVanilla("textures/entity/player/wide/steve.png")
 
     public override fun scale(entity: AbstractClientPlayerEntity, matrices: MatrixStack, amount: Float) {
@@ -73,15 +70,11 @@ public class NPCEntityRenderer(ctx: EntityRendererFactory.Context, slimArms: Boo
         light: Int,
         tickDelta: Float
     ) {
-        val npc = getNpc(entity);
-        if (npc == null) {
-            super.renderLabelIfPresent(entity, text, matrices, vertexConsumers, light, tickDelta)
-            return;
-        }
+        val npc = asNpc(entity)
         val distance = dispatcher.getSquaredDistanceToCamera(entity)
-        val titleText = npc.title
+        val titleText = npc.getTitle()
         matrices.push()
-        if (entity.dataTracker[TRACKED_IS_SMALL]) {
+        if (npc.isSmall) {
             matrices.translate(0f, -(entity.getBaseDimensions(EntityPose.STANDING).height - 0.1f), 0f)
         }
         if (distance < 100 && titleText != null) {

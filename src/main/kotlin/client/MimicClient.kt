@@ -1,9 +1,11 @@
 package gay.pyrrha.mimic.client
 
 import gay.pyrrha.mimic.CLIENT_TAG
+import gay.pyrrha.mimic.client.entity.ClientNPCEntity
 import gay.pyrrha.mimic.client.screen.DialogScreen
-import gay.pyrrha.mimic.entity.NPCEntity
+import gay.pyrrha.mimic.entity.ServerNPCEntity
 import gay.pyrrha.mimic.net.payload.s2c.OpenDialogScreenPayload
+import gay.pyrrha.mimic.net.payload.s2c.SpawnNPCEntityPayload
 import gay.pyrrha.mimic.registry.MimicRegistries
 import io.github.oshai.kotlinlogging.KLogger
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -24,7 +26,7 @@ public object MimicClient : ClientModInitializer {
                         DialogScreen(
                             client.world!!.registryManager[MimicRegistries.DIALOG][payload.dialog]!!,
                             client.world!!.registryManager[MimicRegistries.NPC][payload.npc]!!,
-                            context.client().world!!.getEntityById(payload.entityId) as NPCEntity
+                            context.client().world!!.getEntityById(payload.entityId) as ClientNPCEntity
                         )
                     )
                 }

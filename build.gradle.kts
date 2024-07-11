@@ -18,6 +18,7 @@ fabricApi {
 }
 
 loom {
+    accessWidenerPath = file("src/main/resources/crypt-mimic.accesswidener")
     runs {
         configureEach {
             runDir("runs/$name")
@@ -30,6 +31,12 @@ loom {
     }
 }
 
+repositories {
+    maven("https://api.modrinth.com/maven") {
+
+    }
+}
+
 dependencies {
     minecraft(libs.minecraft)
     mappings(variantOf(libs.fabric.mappings) { classifier("v2") })
@@ -39,6 +46,10 @@ dependencies {
 
     modImplementation(libs.kotlin.logging)
     include(libs.kotlin.logging)
+
+    // Unfortunately, Ears cannot be supported without the full mod.
+    modCompileOnly(libs.ears)
+    modLocalRuntime(libs.ears)
 
     testImplementation(kotlin("test"))
 }
