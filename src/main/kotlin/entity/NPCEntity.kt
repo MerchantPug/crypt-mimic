@@ -239,25 +239,29 @@ public class NPCEntity(entityType: EntityType<NPCEntity>, world: World) : Living
         setRightLegRotation(if (rightLegNbt.isEmpty()) DEFAULT_RIGHT_LEG_ROT else EulerAngle(rightLegNbt))
     }
 
-    private fun poseToNbt(): NbtCompound = NbtCompound().apply {
+    private fun poseToNbt(): NbtCompound {
+        val nbt = NbtCompound()
+
         if (headRotation != DEFAULT_HEAD_ROT) {
-            put("Head", headRotation.toNbt())
+            nbt.put("Head", headRotation.toNbt())
         }
         if (bodyRotation != DEFAULT_BODY_ROT) {
-            put("Body", bodyRotation.toNbt())
+            nbt.put("Body", bodyRotation.toNbt())
         }
         if (leftArmRotation != DEFAULT_LEFT_ARM_ROT) {
-            put("LeftArm", leftArmRotation.toNbt())
+            nbt.put("LeftArm", leftArmRotation.toNbt())
         }
         if (rightArmRotation != DEFAULT_RIGHT_ARM_ROT) {
-            put("RightArm", rightArmRotation.toNbt())
+            nbt.put("RightArm", rightArmRotation.toNbt())
         }
         if (leftLegRotation != DEFAULT_LEFT_LEG_ROT) {
-            put("LeftLeg", leftLegRotation.toNbt())
+            nbt.put("LeftLeg", leftLegRotation.toNbt())
         }
         if (rightLegRotation != DEFAULT_RIGHT_LEG_ROT) {
-            put("RightLeg", rightLegRotation.toNbt())
+            nbt.put("RightLeg", rightLegRotation.toNbt())
         }
+
+        return nbt
     }
 
     override fun tick() {
