@@ -3,7 +3,6 @@ package gay.pyrrha.mimic.server.command
 import com.mojang.brigadier.Command
 import com.mojang.brigadier.CommandDispatcher
 import com.mojang.brigadier.exceptions.SimpleCommandExceptionType
-import gay.pyrrha.mimic.entity.ModEntityTypes
 import gay.pyrrha.mimic.entity.NPCEntity
 import gay.pyrrha.mimic.npc.Npc
 import gay.pyrrha.mimic.registry.MimicRegistries
@@ -12,13 +11,16 @@ import net.minecraft.command.argument.NbtCompoundArgumentType
 import net.minecraft.command.argument.RegistryEntryReferenceArgumentType
 import net.minecraft.command.argument.Vec3ArgumentType
 import net.minecraft.nbt.NbtCompound
+import net.minecraft.network.packet.s2c.play.PlayerListS2CPacket
 import net.minecraft.registry.entry.RegistryEntry
 import net.minecraft.server.command.CommandManager
 import net.minecraft.server.command.ServerCommandSource
+import net.minecraft.server.network.ServerPlayerEntity
 import net.minecraft.text.Text
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.Vec3d
 import net.minecraft.world.World
+import java.util.List
 
 public object MimicNPCCommand {
     public fun register(dispatcher: CommandDispatcher<ServerCommandSource>, registryAccess: CommandRegistryAccess) {
@@ -85,17 +87,14 @@ public object MimicNPCCommand {
             throw INVALID_POSITION_EXCEPTION.create()
         } else {
             val nbtCompound = nbt.copy()
-            nbtCompound.putString("NpcId", source.registryManager[MimicRegistries.NPC].getId(npc.value()).toString())
+            nbtCompound.putString("NpcId", npc.idAsString)
             nbtCompound.putBoolean("Invulnerable", true)
-            val entity = NPCEntity(ModEntityTypes.NPC, source.world)
-            entity.setNpcId(source.registryManager[MimicRegistries.NPC].getId(npc.value())!!)
+            val entity = NPCEntity(source.world)
+            entity.setNpcId(npc.registryKey().value)
             entity.updatePositionAndAngles(pos.x, pos.y, pos.z, entity.yaw, entity.pitch)
-
-            if (!source.world.spawnNewEntityAndPassengers(entity)) {
-                throw FAILED_UUID_EXCEPTION.create()
-            } else {
-                return entity
-            }
+            source.world.server.playerManager.sendToAll(PlayerListS2CPacket.entryFromPlayer(listOf(entity)))
+            source.world.onPlayerConnected(entity)
+            return entity
         }
     }
 

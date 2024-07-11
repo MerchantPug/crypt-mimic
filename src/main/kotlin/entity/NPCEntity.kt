@@ -1,9 +1,10 @@
 package gay.pyrrha.mimic.entity
 
-import gay.pyrrha.mimic.CLIENT_TAG
+import com.mojang.authlib.GameProfile
 import gay.pyrrha.mimic.npc.Npc
 import gay.pyrrha.mimic.npc.NpcAction
 import gay.pyrrha.mimic.registry.MimicRegistries
+import net.fabricmc.fabric.api.entity.FakePlayer
 import net.minecraft.block.piston.PistonBehavior
 import net.minecraft.entity.*
 import net.minecraft.entity.damage.DamageSource
@@ -15,8 +16,8 @@ import net.minecraft.item.ItemStack
 import net.minecraft.nbt.NbtCompound
 import net.minecraft.nbt.NbtElement
 import net.minecraft.nbt.NbtList
-import net.minecraft.registry.RegistryKey
 import net.minecraft.server.network.ServerPlayerEntity
+import net.minecraft.server.world.ServerWorld
 import net.minecraft.text.Text
 import net.minecraft.util.ActionResult
 import net.minecraft.util.Arm
@@ -24,13 +25,13 @@ import net.minecraft.util.Hand
 import net.minecraft.util.Identifier
 import net.minecraft.util.collection.DefaultedList
 import net.minecraft.util.math.EulerAngle
+import net.minecraft.util.math.MathHelper
 import net.minecraft.util.math.Vec3d
-import net.minecraft.world.World
 import net.minecraft.world.event.GameEvent
 import net.minecraft.world.explosion.Explosion
 import net.minecraft.entity.Npc as MojNpc
 
-public class NPCEntity(entityType: EntityType<NPCEntity>, world: World) : LivingEntity(entityType, world),
+public class NPCEntity(world: ServerWorld) : FakePlayer(world, GameProfile(MathHelper.randomUuid(), "[Mimic NPC]")),
     MojNpc {
 
     public companion object {
@@ -45,7 +46,7 @@ public class NPCEntity(entityType: EntityType<NPCEntity>, world: World) : Living
         private val DEFAULT_LEFT_LEG_ROT: EulerAngle = EulerAngle(-1f, 0f, -1f)
         private val DEFAULT_RIGHT_LEG_ROT: EulerAngle = EulerAngle(1f, 0f, 1f)
         private val SMALL_DIMENSIONS: EntityDimensions =
-            ModEntityTypes.NPC.dimensions.scaled(0.5f).withEyeHeight(0.9875f)
+            EntityType.PLAYER.dimensions.scaled(0.5f).withEyeHeight(0.9875f)
 
         public val TRACKED_IS_SMALL: TrackedData<Boolean> =
             DataTracker.registerData(NPCEntity::class.java, TrackedDataHandlerRegistry.BOOLEAN)
@@ -355,27 +356,6 @@ public class NPCEntity(entityType: EntityType<NPCEntity>, world: World) : Living
     private fun setRightLegRotation(angle: EulerAngle) {
         rightLegRotation = angle
         dataTracker[TRACKED_RIGHT_LEG_ROT] = angle
-    }
-
-    override fun getHandItems(): MutableIterable<ItemStack> = heldItems
-    override fun getArmorItems(): MutableIterable<ItemStack> = armourItems
-
-    override fun getEquippedStack(slot: EquipmentSlot): ItemStack =
-        when (slot.type) {
-            EquipmentSlot.Type.HAND -> heldItems[slot.entitySlotId]
-            EquipmentSlot.Type.HUMANOID_ARMOR -> armourItems[slot.entitySlotId]
-            else -> ItemStack.EMPTY
-        }
-
-    override fun canUseSlot(slot: EquipmentSlot): Boolean = slot != EquipmentSlot.BODY
-
-    override fun equipStack(slot: EquipmentSlot, stack: ItemStack) {
-        processEquippedStack(stack)
-        when (slot.type) {
-            EquipmentSlot.Type.HAND -> onEquipStack(slot, heldItems.set(slot.entitySlotId, stack), stack)
-            EquipmentSlot.Type.HUMANOID_ARMOR -> onEquipStack(slot, armourItems.set(slot.entitySlotId, stack), stack)
-            else -> {}
-        }
     }
 
     override fun kill() {

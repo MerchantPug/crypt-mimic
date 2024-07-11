@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_21",
   "mixins": [],
   "client": [
+    "client.AbstractClientPlayerEntityMixin",
     "client.EntityRendererDispatcherMixin",
     "client.PlayerEntityModelMixin"
   ],

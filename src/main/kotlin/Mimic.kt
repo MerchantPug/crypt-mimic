@@ -1,7 +1,6 @@
 package gay.pyrrha.mimic
 
 import gay.pyrrha.mimic.dialog.DialogAction
-import gay.pyrrha.mimic.entity.ModEntityTypes
 import gay.pyrrha.mimic.entity.NPCEntity
 import gay.pyrrha.mimic.net.payload.ModPayloadRegistry
 import gay.pyrrha.mimic.net.payload.c2s.DialogActionPayload
@@ -26,7 +25,6 @@ public object Mimic : ModInitializer {
         LOGGER.info { "$TAG Initializing..." }
         val startTimeMs = measureTimeMillis {
             ModPayloadRegistry.register()
-            ModEntityTypes.register()
             MimicRegistries.register()
 
             CommandRegistrationCallback.EVENT.register { dispatcher, registryAccess, _ ->

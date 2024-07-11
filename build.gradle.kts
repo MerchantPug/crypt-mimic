@@ -20,8 +20,6 @@ fabricApi {
 loom {
     runs {
         configureEach {
-            // enable JBR DCEVM
-            vmArgs("-XX:+AllowEnhancedClassRedefinition")
             runDir("runs/$name")
         }
     }
@@ -69,11 +67,6 @@ tasks {
 kotlin {
     jvmToolchain(21)
     explicitApi()
-    compilerOptions {
-        freeCompilerArgs.addAll(listOf(
-            "-opt-in=kotlinx.serialization.ExperimentalSerializationApi"
-        ))
-    }
 }
 
 java {
