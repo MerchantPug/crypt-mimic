@@ -18,7 +18,6 @@ fabricApi {
 }
 
 loom {
-    accessWidenerPath = file("src/main/resources/crypt-mimic.accesswidener")
     runs {
         configureEach {
             runDir("runs/$name")

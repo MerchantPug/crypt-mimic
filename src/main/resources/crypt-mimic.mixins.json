@@ -4,13 +4,14 @@
   "plugin": "gay.pyrrha.mimic.MimicMixinPlugin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "EntityDataObjectMixin",
-    "ClientPlayNetworkHandlerMixin"
+    "ClientPlayNetworkHandlerMixin",
+    "EntityDataObjectMixin"
   ],
   "client": [
     "client.AbstractClientPlayerEntityMixin",
     "client.EntityRendererDispatcherMixin",
     "client.PlayerEntityModelMixin",
+    "integration.ears.ResourceTextureMixin",
     "integration.ears.TextureManagerMixin"
   ],
   "injectors": {

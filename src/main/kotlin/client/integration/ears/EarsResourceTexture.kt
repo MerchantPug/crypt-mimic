@@ -14,7 +14,7 @@ import net.minecraft.util.Identifier
 public class EarsResourceTexture(id: Identifier) : ResourceTexture(id), EarsFeaturesHolder {
     private var earsFeatures = EarsFeatures.DISABLED
 
-    public override fun upload(image: NativeImage, blur: Boolean, clamp: Boolean) {
+    public fun processSkin(image: NativeImage) {
         EarsStorage.put(image, EarsStorage.Key.ALFALFA, EarsCommon.preprocessSkin(NativeImageAdapter(image)))
 
         EarsCommon.carefullyStripAlpha({ x1: Int, y1: Int, x2: Int, y2: Int ->
@@ -33,8 +33,6 @@ public class EarsResourceTexture(id: Identifier) : ResourceTexture(id), EarsFeat
                 )
             )
         }
-
-        super.upload(image, blur, clamp)
     }
 
     private fun stripAlpha(image: NativeImage, x1: Int, y1: Int, x2: Int, y2: Int) {
