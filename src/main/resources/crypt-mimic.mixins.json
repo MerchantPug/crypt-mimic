@@ -1,6 +1,7 @@
 {
   "required": true,
   "package": "gay.pyrrha.mimic.mixin",
+  "plugin": "gay.pyrrha.mimic.MimicMixinPlugin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
     "EntityDataObjectMixin",

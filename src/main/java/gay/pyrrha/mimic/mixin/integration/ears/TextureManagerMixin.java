@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
-// FIXME: Add a mixin plugin so this doesn't load when Ears isn't loaded.
 @Mixin(TextureManager.class)
 public class TextureManagerMixin {
     @ModifyVariable(method = "registerTexture", at = @At("HEAD"), argsOnly = true)
