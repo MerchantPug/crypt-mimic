@@ -11,6 +11,8 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import java.util.UUID;
+
 @Mixin(EntityDataObject.class)
 public class EntityDataObjectMixin {
     @Shadow @Final private Entity entity;
@@ -18,8 +20,9 @@ public class EntityDataObjectMixin {
     @Inject(method = "setNbt", at = @At("HEAD"), cancellable = true)
     private void mimic$setNbt(NbtCompound nbt, CallbackInfo ci) {
         if (entity instanceof ServerNPCEntity npc) {
-            npc.saveNbt(nbt);
+            UUID uUID = this.entity.getUuid();
             npc.readNbt(nbt);
+            npc.setUuid(uUID);
             ci.cancel();
         }
     }
